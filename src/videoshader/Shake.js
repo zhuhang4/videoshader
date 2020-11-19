@@ -14,7 +14,7 @@ export default {
             editable: true,
         },
         ucolor:{
-            value:[0.,0.,0.],
+            value:[1.,1.,1.],
         },
         scale: {
             value: 1.2,
@@ -50,16 +50,21 @@ export default {
 
         void main()
         {
-            float t = time * speed;
+            float t = 1.;
 
              //将坐标映射到-1，1
             //  vec2 position = (vUv.xy - resolution.xy ) / resolution.y;
              vec2 position = vUv.xy *2.-1.;
              //atan(y,x)返回[-PI,PI],atan(y/x)返回[-PI/2,PI/2]；angle为从(-1,0)为起点转一圈，值域（-0.5，0.5）
+             
              float angle = atan(position.y, position.x) / (2. * 3.14159265359);
              //从(-0.5,0.5)变成(0.5,-0.5)
-             angle -= floor(angle);
+            //  angle -= floor(angle);
              float rad = length(position);
+             if(rad<0.8)
+             {
+                 angle=0.;
+             }
 
              //256为分割数
              float angleRnd = floor(angle * 256.) ;
@@ -77,7 +82,7 @@ export default {
             //  float outputColor = fract(t2);
              float outputColor = dist*fract(t2);
              vec3 colorlight= outputColor * ucolor;
-            //  gl_FragColor = vec4(colorlight, 1.);
+             gl_FragColor = vec4(colorlight, 1.);
 
 
             float s=1.0/scale;
@@ -91,11 +96,13 @@ export default {
             finalUv=vec2(finalUv.x+rangeX,finalUv.y+rangeY);
             if(finalUv.x>1.||finalUv.x<0.||finalUv.y>1.||finalUv.y<0.)
             {
-                gl_FragColor=vec4(vec3(0.),1.);
+                // gl_FragColor=vec4(vec3(0.),1.);
             }
             else{
-                vec3 mix_color=mix(texture2D(img0,finalUv).rgb,22.*colorlight,0.1);
-                gl_FragColor=vec4(mix_color,1.);
+                // vec3 mix_color=mix(texture2D(img0,finalUv).rgb,22.*colorlight,0.1);
+                vec3 mix_color=texture2D(img0,finalUv).rgb;
+                mix_color=mix_color-colorlight*0.9;
+                // gl_FragColor=vec4(mix_color,1.);
             }
            
         }

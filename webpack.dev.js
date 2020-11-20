@@ -5,7 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const fs = require('fs');
 module.exports = merge(common, {
   mode:'development',
-  devtool: 'inline-source-map',
+  devtool: 'cheap-module-eval-source-map',
  
   plugins: [
     new webpack.DefinePlugin({

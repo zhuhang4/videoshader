@@ -6,6 +6,7 @@ const common = require('./webpack.common.js');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const cdnurl = '';
 module.exports = merge(common, {
+  devtool: 'source-map',
   mode: 'production',
   // devtool: 'source-map',
   // module: {

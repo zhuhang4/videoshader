@@ -1,10 +1,12 @@
-import Preload from "./Preload.js";
+// import Preload from "./Preload.js";
 import MyData from "@/MyData.js";
 import Game from "./Game.js";
 import * as YR from "@/YR.js";
 export default class PixiMain extends PIXI.Container {
     constructor(canvas) {
         super();
+        this.parentW = canvas.parentNode.offsetWidth*1;
+        this.parentH = canvas.parentNode.offsetHeight*1;
         MyData.ratio = this.ratio = window.devicePixelRatio;
         this.direction = MyData.direct;
         this.loadComplete = false;
@@ -30,8 +32,8 @@ export default class PixiMain extends PIXI.Container {
         this.pixiStage = new PIXI.Container();
         this.addChild(this.pixiStage);
 
-        this.preload = new Preload();
-        this.pixiStage.addChild(this.preload);
+        // this.preload = new Preload();
+        // this.pixiStage.addChild(this.preload);
 
         this._resize();
         window.onresize = this._resizeHandlerPIXI.bind(this);
@@ -45,40 +47,40 @@ export default class PixiMain extends PIXI.Container {
     };
 
     _resize() {
-        this.pixi_renderer.resize(window.innerWidth, window.innerHeight);
-        this.pixi_renderer.view.style.height = window.innerHeight + 'px';
-        this.pixi_renderer.view.style.width = window.innerWidth + 'px';
+        this.pixi_renderer.resize(this.parentW, this.parentH);
+        this.pixi_renderer.view.style.height = this.parentH + 'px';
+        this.pixi_renderer.view.style.width = this.parentW + 'px';
         let mode = 'noBorder';
-        if(window.innerWidth > window.innerHeight)
-        {
-            mode='showAll';
-        }
-        switch (mode) {
-            case 'exactFit':
-                this.pixiStage.scale.x = window.innerWidth / MyData.stageW;
-                this.pixiStage.scale.y = window.innerHeight / MyData.stageH;
-                break;
-            case 'noBorder':
-                this.pixiStage.scale.x = (window.innerHeight / MyData.stageH < window.innerWidth / MyData.stageW) ? (window.innerWidth / MyData.stageW) : (window.innerHeight / MyData.stageH);
-                this.pixiStage.scale.y = this.pixiStage.scale.x;
-                break;
-            case 'noScale':
-                this.pixiStage.scale.x = 1;
-                this.pixiStage.scale.y = 1;
-                break;
-            case 'showAll':
-                this.pixiStage.scale.x = (window.innerHeight / MyData.stageH < window.innerWidth / MyData.stageW) ? (window.innerHeight / MyData.stageH) : (window.innerWidth / MyData.stageW);
-                this.pixiStage.scale.y = this.pixiStage.scale.x;
-                break;
-        }
-        this.pixiStage.x = (window.innerWidth - MyData.stageW * this.pixiStage.scale.x) * .5;
-        this.pixiStage.y = (window.innerHeight - MyData.stageH * this.pixiStage.scale.y) * .5;
-        MyData.offsetX = this.pixiStage.x / this.pixiStage.scale.x;
-        MyData.offsetY = this.pixiStage.y / this.pixiStage.scale.x;
-        MyData.scale = this.pixiStage.scale.x;
-        MyData.stage = this.pixiStage;
+        // if(this.parentW > this.parentH)
+        // {
+        //     mode='showAll';
+        // }
+        // switch (mode) {
+        //     case 'exactFit':
+        //         this.pixiStage.scale.x = this.parentW / MyData.stageW;
+        //         this.pixiStage.scale.y = this.parentH / MyData.stageH;
+        //         break;
+        //     case 'noBorder':
+        //         this.pixiStage.scale.x = (this.parentH / MyData.stageH < this.parentW / MyData.stageW) ? (this.parentW / MyData.stageW) : (this.parentH / MyData.stageH);
+        //         this.pixiStage.scale.y = this.pixiStage.scale.x;
+        //         break;
+        //     case 'noScale':
+        //         this.pixiStage.scale.x = 1;
+        //         this.pixiStage.scale.y = 1;
+        //         break;
+        //     case 'showAll':
+        //         this.pixiStage.scale.x = (this.parentH / MyData.stageH < this.parentW / MyData.stageW) ? (this.parentH / MyData.stageH) : (this.parentW / MyData.stageW);
+        //         this.pixiStage.scale.y = this.pixiStage.scale.x;
+        //         break;
+        // }
+        // this.pixiStage.x = (this.parentW - MyData.stageW * this.pixiStage.scale.x) * .5;
+        // this.pixiStage.y = (this.parentH - MyData.stageH * this.pixiStage.scale.y) * .5;
+        // MyData.offsetX = this.pixiStage.x / this.pixiStage.scale.x;
+        // MyData.offsetY = this.pixiStage.y / this.pixiStage.scale.x;
+        // MyData.scale = this.pixiStage.scale.x;
+        // MyData.stage = this.pixiStage;
         if (this.direction == 'hor') {
-            if (window.innerWidth < window.innerHeight) {
+            if (this.parentW < this.parentH) {
                 if (this.pageVer && this.loadComplete) {
                     this.pixiStage.addChild(this.pageVer);
                 }
@@ -96,17 +98,17 @@ export default class PixiMain extends PIXI.Container {
         //竖版设计
         else {
             //假横屏
-            if (window.innerWidth > window.innerHeight) {
+            if (this.parentW > this.parentH) {
                
             }
             else {
             
             }
             
-            if (this.loadComplete && !this.game) {
+            // if (this.loadComplete && !this.game) {
                 this.game = new Game();
                 this.pixiStage.addChildAt(this.game, 0);
-            }
+            // }
 
             // console.log('myVideo:',myVideo);
             // if(myVideo)
@@ -125,7 +127,7 @@ export default class PixiMain extends PIXI.Container {
         }
     }
     pixiStart() {
-        this.preload.out();
+        // this.preload.out();
         this._resize();
     }
 

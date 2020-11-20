@@ -65,35 +65,25 @@ export default {
     };
   },
   mounted() {
-      console.log(this.$refs['select'])
-    // this.$refs['select'].value=this.options[1].name;
-    this.changeHandler(this.options[1].value)
-
+      console.log('mounted')
     YR.Mediator.getInstance().add("Filter_UpdateParams", (e) => {
-      console.log(e.data);
-      //   this.current_uniform = null;
-        // this.current_uniform = {};
       this.current_uniform = e.data;
-    
-      
-
-      //   for (let key in e.data) {
-      //     if (e.data[key].editable) {
-      //       this.current_uniform[key] = e.data[key];
-      //     }
-      //   }
     });
+    this.changeHandler(this.options[1].value);
+  },
+  updated(){
+      console.log('update::',this.data);
+  },
+  destroyed(){
+      console.log('destroyed');
   },
   components: {},
   methods: {
     changeHandler(e) {
-      console.log('更换滤镜：：：：：',e);
+      console.log("更换滤镜：：：：：", e);
       YR.Mediator.getInstance().fire("Filter_Change", { name: e });
     },
     slideChangeHandler(obj, key, e) {
-      console.log(e);
-      // this.$set(obj,key,e)
-      console.log(obj);
     },
   },
 };

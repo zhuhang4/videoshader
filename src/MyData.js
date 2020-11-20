@@ -23,7 +23,7 @@ export default class MyData {
     MyData.offsetX = 0;
     MyData.offsetY = 0;
     //2d,3d,都不是就是2d+3d
-    MyData.mode = '3d';
+    MyData.mode = '2d+3d';
     //竖屏：ver ；横屏hor
     MyData.direct = "ver";
     MyData.threeProgress = 0;

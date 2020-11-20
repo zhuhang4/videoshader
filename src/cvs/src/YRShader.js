@@ -1,6 +1,6 @@
+
 export default class YRShader {
 	constructor() {
-		console.log('YRShader初始化完毕')
 		YRShader.Dissolve = {
 			uniforms: {
 				offsetX: 0.0,

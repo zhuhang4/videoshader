@@ -10,6 +10,9 @@ import MyData from './MyData.js';
 import VueLazyload from 'vue-lazyload';
 import 'element-ui/lib/theme-chalk/index.css';
 import { Icon,Select,Option,Slider,Divider } from 'element-ui';
+import Vuex from 'vuex';
+import store from './store';
+
 // import Element from 'element-ui';
 // Vue.use(Element, { size: 'small', zIndex: 3000 });
 new MyData();
@@ -22,6 +25,8 @@ new MyData();
 
 // Vue.prototype.$video = Video;
 // Vue.use(Element);
+
+Vue.use(Vuex)
 Vue.use(Divider);
 Vue.use(Slider);
 Vue.use(Option);
@@ -51,7 +56,7 @@ const router = new VueRouter({
 
 new Vue({
 	router,
-	// store,
+	store,
 	render: h => h(App),
 	// mounted() {
 	// document.dispatchEvent(new Event("render-event"));

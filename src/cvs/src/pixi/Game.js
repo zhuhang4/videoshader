@@ -1,12 +1,20 @@
 import * as YR from '@/YR';
 import MyData from '@/MyData';
 import MyVideo from '../MyVideo.js';
-
-import Page0 from './Page0.js';
 import PageShader from './PageShader.js';
 export default class Game extends PIXI.Container {
   constructor() {
     super();
+
+    this.bg=YR.Easy.CreateRect(0,0,500,500,1);
+    this.addChild(this.bg);
+
+    let sp=new PIXI.Graphics();
+    sp.beginFill(0xff0000,1);
+    sp.lineStyle(10,0xffff00,1);
+    sp.drawCircle(55,55,100,100);
+    // sp.drawTorus (50,50,200,50,0,Math.PI*2);
+    this.addChild(sp);
 
     // this.p0=new Page0();
     // this.addChild(this.p0);
@@ -15,8 +23,8 @@ export default class Game extends PIXI.Container {
     // this.init();
     // YR.Easy.CreateJSONGroup(json_group0, this);
 
-    this.bt = YR.Easy.CreateSprite('loading.jpg', 0, 0, 0.0, 0.0, 1);
-    this.addChild(this.bt);
+    // this.bt = YR.Easy.CreateSprite('loading.jpg', 0, 0, 0.0, 0.0, 1);
+    // this.addChild(this.bt);
 
     // this.addShader(); 
   }

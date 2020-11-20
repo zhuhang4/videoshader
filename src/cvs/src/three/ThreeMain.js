@@ -56,6 +56,7 @@ export default class ThreeMain {
         this.animate();
 
         YR.Mediator.getInstance().add('Filter_Change', (e) => {
+            console.log('receive')
             let uniforms = this.threeshader.changeShader(e.name).uniforms;
             YR.Mediator.getInstance().fire('Filter_UpdateParams', {
                 data: uniforms

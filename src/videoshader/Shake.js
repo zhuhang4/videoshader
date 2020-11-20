@@ -7,21 +7,32 @@ export default {
             value: 0
         },
         speed: {
-            value: 0.1
+            value: 0.5,
         },
-        uniformity: {
-            value: 1.2,
+        brightness: {
+            name:'视频亮度',
+            value: 1.3,
             editable: true,
+            max: 3,
+            min: 0.5
         },
-        ucolor:{
-            value:[1.,1.,1.],
+        brightness_light: {
+            name:'速度线亮度',
+            value: 0.15,
+            editable: true,
+            max: 1,
+            min: 0
+        },
+        ucolor: {
+            value: [1., 1., 1.],
         },
         scale: {
+            name:'抖动幅度',
             value: 1.2,
             editable: true,
             max: 3,
             min: 1,
-        }
+        },
     },
     vertexShader: `
         varying vec2 vUv;
@@ -34,13 +45,14 @@ export default {
     fragmentShader: `
         uniform sampler2D img0;
         uniform float time;
-        uniform vec3 ucolor;
         uniform float scale;
-        varying vec2 vUv;
-        
+        uniform vec3 ucolor;
         uniform float speed;
         uniform vec2 resolution;
-        uniform float uniformity;
+        uniform float brightness;
+        uniform float brightness_light;
+
+        varying vec2 vUv;
 
         float randomNoise(float x, float y)
         {
@@ -50,7 +62,7 @@ export default {
 
         void main()
         {
-            float t = 1.;
+            float t = time;
 
              //将坐标映射到-1，1
             //  vec2 position = (vUv.xy - resolution.xy ) / resolution.y;
@@ -61,28 +73,16 @@ export default {
              //从(-0.5,0.5)变成(0.5,-0.5)
             //  angle -= floor(angle);
              float rad = length(position);
-             if(rad<0.8)
-             {
-                 angle=0.;
-             }
 
              //256为分割数
              float angleRnd = floor(angle * 256.) ;
              //调整值看发散情况
              float angleRnd1 =  fract(angleRnd * fract(angleRnd*0.7235) * 45.1) ;
-             float angleRnd2 = fract(angleRnd * fract(angleRnd*0.82657) * 13.724) ;
-             float t2 = randomNoise(t,999.) + angleRnd1 * 5.;
-             float radDist = sqrt(angleRnd2);
-             //中心部分更明亮
-             float adist = radDist / rad * .5;
-             float dist = (t2 * .1 + adist);
-             dist = abs(fract(dist) - 0.1);
+             float t2 = randomNoise(t,999.) + angleRnd1 ;
 
-            //  float outputColor = (1.0 / (dist)) * cos(0.7 * sin(t)) * adist / radDist / 30.0;
-            //  float outputColor = fract(t2);
-             float outputColor = dist*fract(t2);
+             float outputColor = rad*rad*rad*fract(t2)* brightness_light;
              vec3 colorlight= outputColor * ucolor;
-             gl_FragColor = vec4(colorlight, 1.);
+            //  gl_FragColor = vec4(colorlight, 1.);
 
 
             float s=1.0/scale;
@@ -96,13 +96,12 @@ export default {
             finalUv=vec2(finalUv.x+rangeX,finalUv.y+rangeY);
             if(finalUv.x>1.||finalUv.x<0.||finalUv.y>1.||finalUv.y<0.)
             {
-                // gl_FragColor=vec4(vec3(0.),1.);
+                gl_FragColor=vec4(vec3(0.),1.);
             }
             else{
-                // vec3 mix_color=mix(texture2D(img0,finalUv).rgb,22.*colorlight,0.1);
                 vec3 mix_color=texture2D(img0,finalUv).rgb;
-                mix_color=mix_color-colorlight*0.9;
-                // gl_FragColor=vec4(mix_color,1.);
+                mix_color=mix_color-colorlight*brightness;
+                gl_FragColor=vec4(mix_color,1.);
             }
            
         }

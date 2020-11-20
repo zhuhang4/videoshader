@@ -74,7 +74,6 @@ export default class ThreeShader {
         this.shaderApply(Shader);
         this.tex_vd.wrapS = THREE.RepeatWrapping;
         this.tex_vd.wrapT = THREE.MirroredRepeatWrapping;
-        console.log("this.tex_vd::::::::::::",this.tex_vd);
         this.tex_vd.repeat.set(2,2);
         this.time = setInterval(() => {
             Shader.uniforms.time.value += Shader.uniforms.speed.value;
